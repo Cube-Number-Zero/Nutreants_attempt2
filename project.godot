@@ -11,12 +11,17 @@ config_version=4
 [application]
 
 config/name="Nutreants"
-run/main_scene="res://World.tscn"
+run/main_scene="res://MainMenu.tscn"
 
 [autoload]
 
 SoundPlayer="*res://SoundPlayer.tscn"
 ResourceManager="*res://ResourceManager.tscn"
+
+[global]
+
+start=false
+"starting scene"=false
 
 [gui]
 
