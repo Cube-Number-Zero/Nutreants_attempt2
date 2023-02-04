@@ -2,7 +2,7 @@ extends Node2D
 
 # Declare member variables here.
 
-const PAN_SPEED = 127
+const PAN_SPEED = 256
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

@@ -14,13 +14,14 @@ onready var parent_node = $tree_root_node # The parent node to create new nodes 
 var first_node_in_branch = true # Unused
 var drawing_branch_ID = "" # Unused, for identifying the specific branch a root is on
 var max_root_length = MINIMUM_NODE_DISTANCE # the longest root from the base of the tree; use this (at least partially) for resource consumption scaling
+onready var tree_base  = $tree_root_node # Convinience variable for the base of the tree
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Create the first root node at the top of the screen
-	$tree_root_node.permanent = true
+	tree_base.permanent = true
 	var new_node = NEW_NODE.instance()
-	$tree_root_node.add_child(new_node)
+	tree_base.add_child(new_node)
 	new_node.position = Vector2(0, MINIMUM_NODE_DISTANCE)
 	new_node.get_child(0).get_child(0).set_point_position(0, Vector2(0.0, -40.0))
 	$tree_root_node/tree_root_node.permanent = true
@@ -31,7 +32,7 @@ func _process(delta):
 	if Input.is_mouse_button_pressed(1):
 		if not drawing:
 			# Find the closest node to the mouse cursor
-			var closest_node = $tree_root_node.get_closest_node_to_point(mouse_position)
+			var closest_node = tree_base.get_closest_node_to_point(mouse_position)
 			if closest_node[1] <= pow(MAXIMUM_DRAW_SNAP_DISTANCE, 2):
 				# Begin drawing from the closest node
 				drawing = true
@@ -46,7 +47,8 @@ func _process(delta):
 		
 		if squared_distance_from_parent_node >= pow(MINIMUM_NODE_DISTANCE, 2):
 			# Test to see if the node collides with any other nodes
-			if $tree_root_node.test_collision(mouse_position, MINIMUM_UNRELATED_NODE_DISTANCE, parent_node.gather_nearby_nodes(2)):
+			if tree_base.test_collision(mouse_position,\
+				MINIMUM_UNRELATED_NODE_DISTANCE, parent_node.gather_nearby_nodes(1)):
 				# The root being drawn collided with another root!
 				drawing = false
 			else:
@@ -58,15 +60,18 @@ func _process(delta):
 					parent_node.get_global_position() - new_node.get_global_position())
 				
 				# if first_node_in_branch:
-					# $tree_root_node.calculate_branch_ID("0")
+					# tree_base.calculate_branch_ID("0")
 					# drawing_branch_ID = new_node.branch_ID
 				# else:
 					# new_node.branch_ID = drawing_branch_ID
 					
 				parent_node = new_node
+				# Play sound
+				SoundPlayer.play_grow_root(mouse_position)
 				# Recalculate the longest distance
-				max_root_length = $tree_root_node.get_longest_distance_from_origin()
+				max_root_length = tree_base.get_longest_distance_from_origin()
+				tree_base.get_size()
 	
 	if Input.is_mouse_button_pressed(2):
 		# The player is right clicking
-		$tree_root_node.try_to_erase_at_location(mouse_position, ERASER_RADIUS)
+		tree_base.try_to_erase_at_location(mouse_position, ERASER_RADIUS)
