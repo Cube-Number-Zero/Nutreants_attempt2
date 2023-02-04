@@ -35,4 +35,5 @@ func _process(delta):
 		position.y = 0
 		camera_pan_velocity.y = 0
 	$background_rect.rect_position = -position
+	# Updates the indicator lines for all patches
 	resource_patches.update_indicator_lines()

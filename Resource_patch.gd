@@ -20,12 +20,18 @@ func _ready():
 	polygon.color = Color(0.5, 0.75, 1)
 	
 func randomize_patch_size():
+	"""Sets the resource value and size to a random value. Smaller patches are more common
+	Returns nothing
+	"""
 	var normalized_size = randf() * randf()
 	resources_per_second = lerp(ResourceManager.MIN_RESOURCE_VALUE,\
 								ResourceManager.MAX_RESOURCE_VALUE, normalized_size)
 	polygon_radius = pow(lerp(sqrt(MIN_RADIUS), sqrt(MAX_RADIUS), normalized_size), 2)
 
 func connect_to():
+	"""Adds the resource value to the player's total income. Does not require the node connecting to it
+	Returns nothing
+	"""
 	if acquired:
 		print("WARNING: Tried to double collect a resource!")
 	else:
@@ -39,6 +45,9 @@ func connect_to():
 		
 
 func disconnect_from():
+	"""Reverts this patch to its original state. The offscreen indicator line remains permanently disabled.
+	Returns nothing
+	"""
 	if acquired:
 		acquired = false
 		ResourceManager.resource_income -= resources_per_second
@@ -49,6 +58,7 @@ func disconnect_from():
 
 func place_points():
 	"""Places the points of the polygon in a semi-random area around the center
+	Returns nothing
 	"""
 	var start_angle = randf() * TAU
 	var p1 = polygon_radius * Vector2(cos(start_angle          ), sin(start_angle          ))
@@ -79,16 +89,21 @@ func place_points():
 	polygon.polygon = [p1, p2, p3, p4, p5, p6]
 	
 func update_indicator_line():
+	"""Updates this patch's inicator arrow
+	Returns nothing
+	"""
 	if not lineless:
 		line.position = Vector2(512, 300) - position - 1 * game_world.position
-		if not inside_camera_view(get_global_position(), 50):
+		if not is_inside_camera_view(get_global_position(), 50):
 			line.set_point_position(0, (-line.position).normalized() * 290)
 			line.set_point_position(1, (-line.position).normalized() * 300)
 			line.visible = true
 		else:
 			line.visible = false
 
-func inside_camera_view(loc, tolerance):
+func is_inside_camera_view(loc, tolerance=0):
+	"""Returns true if <loc> is inside the player's view, or within a certain <tolerance>
+	"""
 	if loc.x < -tolerance:
 		return false
 	if loc.y < -tolerance:
