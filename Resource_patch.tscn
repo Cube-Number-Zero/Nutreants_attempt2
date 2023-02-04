@@ -1,9 +1,20 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Resource_patch.gd" type="Script" id=1]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 1 ), 0.0, -1.0, 0, 0, Vector2( 1, 0 ), -1.00431, 0.0, 0, 0 ]
 
 [node name="resource_patch" type="Node2D"]
 script = ExtResource( 1 )
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
+z_index = 2
 antialiased = true
+
+[node name="Line2D" type="Line2D" parent="."]
+z_index = 4
+points = PoolVector2Array( 0, 0, 0, 0 )
+width = 5.0
+width_curve = SubResource( 1 )
+default_color = Color( 0.5, 0.75, 1, 0.25 )

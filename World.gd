@@ -7,6 +7,7 @@ const PAN_ACCELERATION = 1024
 
 onready var resource_patches = $resouce_patches
 onready var rocks = $rocks
+onready var background = $background_rect
 
 var camera_pan_velocity = Vector2.ZERO
 
@@ -33,3 +34,5 @@ func _process(delta):
 	if position.y > 0:
 		position.y = 0
 		camera_pan_velocity.y = 0
+	$background_rect.rect_position = -position
+	resource_patches.update_indicator_lines()

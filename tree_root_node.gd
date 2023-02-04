@@ -24,10 +24,6 @@ onready var world = get_parent()
 func _ready():
 	while world.name != "World":
 		world = world.get_parent()
-		
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
 
 func at_end():
 	# Returns true if the node is at the end of a root
@@ -45,6 +41,8 @@ func get_closest_node_to_point(loc):
 		
 	# Tests to see if this node's children are closer and returns their result if so
 	elif get_child_count() == 2:
+		if $tree_root_node == null:
+			return own_result
 		var best_child = $tree_root_node.get_closest_node_to_point(loc)
 		if own_result[1] < best_child[1]:
 			return own_result
@@ -161,20 +159,18 @@ func get_size():
 	if in_rocky_soil:
 		line.width = sqrt(size) * 0.5 / 2
 		line.default_color = Color(0.15, 0.1, 0.05)
+		line.z_index = 2.9
 	else:
 		line.width = sqrt(size) * 0.5
-		line.default_color = Color(0.3, 0.2, 0.1)
+		line.default_color = Color(0.402344, 0.330833, 0.259323)
+		line.z_index = 3
 	return size
 
-func test_if_in_rock():
-	if len(collider.get_overlapping_areas()) > 0:
-		for rock in world.rocks.get_children():
-			if collider.overlaps_area(rock.collider):
-				return true
-	return false
-
 func _on_Area2D_area_entered(area):
-	in_rocky_soil = test_if_in_rock()
+	if area.get_parent().name == "Rock":
+		in_rocky_soil = true
+	else:
+		in_rocky_soil = false
 	get_size()
 
 

@@ -3,11 +3,11 @@ extends Node
 
 # Declare member variables here.
 
-const MINIMUM_NODE_DISTANCE = 25 # How close adjacent root nodes can be (lowering this makes the vines more smooth at the cost of performance)
-const MAXIMUM_DRAW_SNAP_DISTANCE = 40 # How close the cursor needs to be to a node to start drawing from it
-const MINIMUM_UNRELATED_NODE_DISTANCE = 30 # How close a root can grow to a seperate root
-const ERASER_RADIUS = 60
-const MINIMUM_RESOURCE_SNAP_DISTANCE = 25 # How close a node has to be to a resource patch to snap to it and begin collecting
+const MINIMUM_NODE_DISTANCE = 6 # How close adjacent root nodes can be (lowering this makes the vines more smooth at the cost of performance)
+const MAXIMUM_DRAW_SNAP_DISTANCE = 10 # How close the cursor needs to be to a node to start drawing from it
+const MINIMUM_UNRELATED_NODE_DISTANCE = 8 # How close a root can grow to a seperate root
+const ERASER_RADIUS = 15
+const MINIMUM_RESOURCE_SNAP_DISTANCE = 12 # How close a node has to be to a resource patch to snap to it and begin collecting
 const NEW_NODE = preload("res://tree_root_node.tscn")
 
 var drawing = false # Is the player drawing something?
@@ -31,26 +31,26 @@ func _ready():
 	new_node.get_size()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta):
+func _physics_process(_delta):
 	var mouse_position = get_viewport().get_mouse_position()
-	if Input.is_mouse_button_pressed(1):
+	if Input.is_mouse_button_pressed(2):
+		# The player is right clicking
+		tree_base.try_to_erase_at_location(mouse_position, ERASER_RADIUS)
+		update_root_network()
+		drawing = false
+	elif Input.is_mouse_button_pressed(1):
 		if not drawing:
 			# Find the closest node to the mouse cursor
 			snap_to_node(mouse_position)
 	else:
 		drawing = false
-		
+	
 	if drawing:
 		if not too_close_to_previous_node(mouse_position):
 			if colliding_with_node(mouse_position):
 				drawing = false
 			else:
 				add_node(mouse_position)
-	
-	if Input.is_mouse_button_pressed(2):
-		# The player is right clicking
-		tree_base.try_to_erase_at_location(mouse_position, ERASER_RADIUS)
-		update_root_network()
 		
 func snap_to_node(loc):
 	var closest_node = tree_base.get_closest_node_to_point(loc)

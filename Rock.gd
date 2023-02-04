@@ -6,7 +6,7 @@ onready var collider = $Area2D
 
 func _ready():
 	randomize()
-	generate_random_rock_formation(500, 200, 0.6, 100)
+	generate_random_rock_formation(125, 50, 0.6, 25)
 	
 func generate_random_rock_formation(distance_from_origin, depth, width_ratio, distance_between_points):
 	# distance_from_origin = how many pixels the center of the rock formation is from the tree base
