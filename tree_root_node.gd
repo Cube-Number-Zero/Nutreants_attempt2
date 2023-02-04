@@ -11,6 +11,8 @@ var branch_ID = "0"
 var longest_distance = 0
 var permanent = false
 var size = 10
+var connected_to_patch = false # Is the node gathering resources from a patch?
+var connected_patch = null # The patch this node is connected to, if there is one
 
 onready var line = $node_stuff/Line2D
 
@@ -118,6 +120,8 @@ func try_to_erase_at_location(loc, radius):
 	if at_end() and not permanent:
 		if loc.distance_squared_to(get_global_position()) <= pow(radius, 2):
 			queue_free()
+			if connected_to_patch:
+				connected_patch.disconnect_from()
 	else:
 		for childNode in get_children():
 			if childNode.name != "node_stuff":

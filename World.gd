@@ -13,10 +13,10 @@ func _ready():
 func _process(delta):
 	# Pan the camera
 	if Input.is_action_pressed("ui_up"):
-		$roots.position.y = min($roots.position.y + PAN_SPEED * delta, 0)
+		position.y = min(position.y + PAN_SPEED * delta, 0)
 	if Input.is_action_pressed("ui_right"):
-		$roots.position.x -= PAN_SPEED * delta
+		position.x -= PAN_SPEED * delta
 	if Input.is_action_pressed("ui_down"):
-		$roots.position.y -= PAN_SPEED * delta
+		position.y -= PAN_SPEED * delta
 	if Input.is_action_pressed("ui_left"):
-		$roots.position.x += PAN_SPEED * delta
+		position.x += PAN_SPEED * delta

@@ -16,6 +16,7 @@ run/main_scene="res://World.tscn"
 [autoload]
 
 SoundPlayer="*res://SoundPlayer.tscn"
+ResourceManager="*res://ResourceManager.tscn"
 
 [gui]
 
