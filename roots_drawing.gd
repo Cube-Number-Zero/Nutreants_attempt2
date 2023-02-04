@@ -8,10 +8,10 @@ const MAXIMUM_DRAW_SNAP_DISTANCE = 40 # How close the cursor needs to be to a no
 const MINIMUM_UNRELATED_NODE_DISTANCE = 50 # How close a root can grow to a seperate root
 const NEW_NODE = preload("res://tree_root_node.tscn")
 
-var drawing = false
-onready var parent_node = $tree_root_node
-var first_node_in_branch = true
-var drawing_branch_ID = ""
+var drawing = false # Is the player drawing something?
+onready var parent_node = $tree_root_node # The parent node to create new nodes from
+var first_node_in_branch = true # Unused
+var drawing_branch_ID = "" # Unused, for identifying the specific branch a root is on
 var max_root_length = MINIMUM_NODE_DISTANCE # the longest root from the base of the tree; use this (at least partially) for resource consumption scaling
 
 # Called when the node enters the scene tree for the first time.
@@ -42,16 +42,18 @@ func _process(delta):
 			mouse_position.distance_squared_to(parent_node.get_global_position())
 		
 		if squared_distance_from_parent_node >= pow(MINIMUM_NODE_DISTANCE, 2):
+			# Create a list of the adjacent few nodes (so the root won't collide with nodes it's attached to)
+			# I'm going to improve this later, it's kind of janky right now
 			var ignored_node_list = [parent_node.get_global_position(), parent_node.get_parent().get_global_position(), parent_node.get_parent().get_parent().get_global_position()]
 			if parent_node.get_child_count() >= 2:
 				ignored_node_list.append(parent_node.get_child(1).get_global_position())
 				if parent_node.get_child(1).get_child_count() >= 2:
 					ignored_node_list.append(parent_node.get_child(1).get_child(1).get_global_position())
+			# Test to see if the node collides with any other nodes
 			if $tree_root_node.test_collision(mouse_position, MINIMUM_UNRELATED_NODE_DISTANCE, ignored_node_list):
 					
 				# The root being drawn collided with another root!
 				drawing = false
-				print("No!")
 			else:
 				# Create the next node
 				var new_node = NEW_NODE.instance()

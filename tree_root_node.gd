@@ -19,9 +19,16 @@ func _process(delta):
 	pass
 
 func get_closest_node_to_point(loc):
+	"""Finds which node is closest to a given location
+	Only call this node from the base tree_root_node
+	Outputs an array with the node object itself and the distance to the location
+	[node, distance]"""
+	# Tests how close this node is to the location
 	var own_result = [self, loc.distance_squared_to(get_global_position())]
 	if get_child_count() == 1:
 		return own_result
+		
+	# Tests to see if this node's children are closer and returns their result if so
 	elif get_child_count() == 2:
 		var best_child = $tree_root_node.get_closest_node_to_point(loc)
 		if own_result[1] < best_child[1]:
@@ -43,6 +50,9 @@ func get_closest_node_to_point(loc):
 			return minimum_distance_found
 			
 func calculate_branch_ID(parent_branch_ID):
+	"""Unused, call from the base tree_root_node
+	Calculates branch_IDs for all nodes
+	"""
 	branch_ID = parent_branch_ID
 	if get_child_count() == 2:
 		$tree_root_node.calculate_branch_ID(parent_branch_ID)
@@ -56,7 +66,11 @@ func calculate_branch_ID(parent_branch_ID):
 func get_next_branch_ID():
 	return branch_ID + "." + str(get_child_count() - 1)
 
-func test_collision(loc, collision_distance, ignored_locs):
+func test_collision(loc, collision_distance, ignored_locs=[]):
+	"""Tests to see if a location is within collision distance of a node
+	Can provide locations to ignore in the search
+	Returns a float distance
+	"""
 	if get_global_position().distance_squared_to(loc) <= pow(collision_distance, 2):
 		if not get_global_position() in ignored_locs:
 			return true
@@ -67,6 +81,10 @@ func test_collision(loc, collision_distance, ignored_locs):
 	return false
 	
 func get_longest_distance_from_origin():
+	"""Finds the longest root from the origin and returns the length
+	Call from the base tree_root_node
+	Returns a float distance
+	"""
 	if get_child_count() == 1:
 		return get_global_position().distance_to(get_parent().get_global_position())
 	var longest_child_distance = null
@@ -81,4 +99,7 @@ func get_longest_distance_from_origin():
 	return longest_child_distance
 
 func update_line2D():
+	"""Call this again if you for some reason move a node after it's been placed
+	Only affects the specific node it's called on
+	"""
 	$node_stuff/Line2D.set_point_position(0, get_parent().get_global_position() - get_global_position())
