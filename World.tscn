@@ -7,17 +7,17 @@
 [ext_resource path="res://resouce_patches.gd" type="Script" id=5]
 
 [node name="World" type="Node2D"]
+position = Vector2( 512, 0 )
 script = ExtResource( 3 )
 
 [node name="roots" type="Node2D" parent="."]
-position = Vector2( 512, 0 )
 z_index = 1
 script = ExtResource( 2 )
 
 [node name="tree_root_node" parent="roots" instance=ExtResource( 1 )]
-position = Vector2( -1, -2 )
 
-[node name="resouce_patches" type="Node" parent="."]
+[node name="resouce_patches" type="Node2D" parent="."]
 script = ExtResource( 5 )
 
 [node name="resource_patch" parent="resouce_patches" instance=ExtResource( 4 )]
+position = Vector2( -54, 397 )

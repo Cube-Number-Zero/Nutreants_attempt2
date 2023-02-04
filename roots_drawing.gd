@@ -7,7 +7,7 @@ const MINIMUM_NODE_DISTANCE = 25 # How close adjacent root nodes can be (lowerin
 const MAXIMUM_DRAW_SNAP_DISTANCE = 40 # How close the cursor needs to be to a node to start drawing from it
 const MINIMUM_UNRELATED_NODE_DISTANCE = 50 # How close a root can grow to a seperate root
 const ERASER_RADIUS = 60
-const MINIMUM_RESOURCE_SNAP_DISTANCE = 50 # How close a node has to be to a resource patch to snap to it and begin collecting
+const MINIMUM_RESOURCE_SNAP_DISTANCE = 25 # How close a node has to be to a resource patch to snap to it and begin collecting
 const NEW_NODE = preload("res://tree_root_node.tscn")
 
 var drawing = false # Is the player drawing something?
@@ -94,7 +94,7 @@ func add_node(loc, connected = false, connected_resource_patch=null):
 		var test_gather_resource_patch = resource_patches.test_connection(loc, MINIMUM_RESOURCE_SNAP_DISTANCE)
 		if test_gather_resource_patch[0]:
 			# This node is close enough to a resource patch to connect to it!
-			add_node(test_gather_resource_patch[1].position, true, test_gather_resource_patch[1])
+			add_node(test_gather_resource_patch[1].get_global_position(), true, test_gather_resource_patch[1])
 
 func colliding_with_node(loc):
 	return tree_base.test_collision(loc, MINIMUM_UNRELATED_NODE_DISTANCE, parent_node.gather_nearby_nodes(1))

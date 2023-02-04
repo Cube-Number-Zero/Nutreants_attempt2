@@ -6,13 +6,11 @@ var cost_per_second = 0.0 # The amount of resources drained every second
 var base_cost_per_second = 0.0 # Resource cost dependent on time
 var base_cost_per_second_increase_rate = 0.0167 # How fast base_cost_per_second_increases
 var resource_income = 0.0 # How many resources the player gets per second from patches
+var unexploited_resource_income = 0.0 # How many resources per second the player isn't getting from unexploited nodes
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	pass
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	cost_per_second = 0.0
 	
