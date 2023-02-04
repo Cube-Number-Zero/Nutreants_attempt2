@@ -3,34 +3,60 @@ extends Node
 
 # Declare member variables here.
 
-const MINIMUM_NODE_DISTANCE = 30
-const MAXIMUM_DRAW_SNAP_DISTANCE = 100
+const MINIMUM_NODE_DISTANCE = 40 # How close adjacent root nodes can be (lowering this makes the vines more smooth at the cost of performance)
+const MAXIMUM_DRAW_SNAP_DISTANCE = 40 # How close the cursor needs to be to a node to start drawing from it
+const MINIMUM_UNRELATED_NODE_DISTANCE = 50 # How close a root can grow to a seperate root
 const NEW_NODE = preload("res://tree_root_node.tscn")
 
 var drawing = false
 onready var parent_node = $tree_root_node
+var first_node_in_branch = true
+var drawing_branch_ID = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	var new_node = NEW_NODE.instance()
+	$tree_root_node.add_child(new_node)
+	new_node.position = Vector2(0, MINIMUM_NODE_DISTANCE)
+	new_node.get_child(0).get_child(0).set_point_position(0, Vector2(0.0, -40.0))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	var mouse_position = get_viewport().get_mouse_position()
 	if Input.is_mouse_button_pressed(1):
-		drawing = true
+		if not drawing:
+			# Find the closest node to the mouse cursor
+			var closest_node = $tree_root_node.get_closest_node_to_point(mouse_position)
+			if closest_node[1] <= pow(MAXIMUM_DRAW_SNAP_DISTANCE, 2):
+				# Begin drawing from the closest node
+				drawing = true
+				parent_node = closest_node[0]
+				first_node_in_branch = true
 	else:
-		drawing = false	
-	
+		drawing = false
+		
 	if drawing:
-		var mouse_position = get_viewport().get_mouse_position()
 		var squared_distance_from_parent_node =\
 			mouse_position.distance_squared_to(parent_node.get_global_position())
 		
 		if squared_distance_from_parent_node >= pow(MINIMUM_NODE_DISTANCE, 2):
-			var new_node = NEW_NODE.instance()
-			parent_node.add_child(new_node)
-			new_node.position = mouse_position - parent_node.get_global_position()
-			new_node.get_child(0).set_point_position(0, \
-				parent_node.get_global_position() - new_node.get_global_position())
-			
-			parent_node = new_node
+			if $tree_root_node.test_collision(mouse_position,\
+					MINIMUM_UNRELATED_NODE_DISTANCE, parent_node.get_global_position()):
+				
+				# The root being drawn collided with another root!
+				drawing = false
+			else:
+				var new_node = NEW_NODE.instance()
+				parent_node.add_child(new_node)
+				new_node.position = mouse_position - parent_node.get_global_position()
+				new_node.get_child(0).get_child(0).set_point_position(0, \
+					parent_node.get_global_position() - new_node.get_global_position())
+				
+				# if first_node_in_branch:
+					# $tree_root_node.calculate_branch_ID("0")
+					# drawing_branch_ID = new_node.branch_ID
+				# else:
+					# new_node.branch_ID = drawing_branch_ID
+					
+				
+				parent_node = new_node
