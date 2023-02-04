@@ -8,9 +8,6 @@ var resource_generator_radius = ResourceManager.START_RESOURCE_DISTANCE # How fa
 
 const NEW_RESOURCE = preload("res://Resource_patch.tscn")
 
-func _ready():
-	pass
-
 func _process(_delta):
 	if ResourceManager.unexploited_resource_income < TOTAL_RESOURCE_INCOME_GOAL:
 		generate_resource_patch()
@@ -26,6 +23,8 @@ func test_connection(loc, connection_range):
 	return [false]
 
 func generate_resource_patch():
+	"""Creates a new resource patch and gives it the appropriate parameters
+	"""
 	var new_patch = NEW_RESOURCE.instance()
 	add_child(new_patch)
 	var generation_angle = -lerp(PI, TAU, randf())
@@ -34,5 +33,7 @@ func generate_resource_patch():
 	resource_generator_radius += new_patch.resources_per_second * ResourceManager.RESOURCE_SCARCITY
 
 func update_indicator_lines():
+	"""Updates the indicator lines that show when a patch is far away.  Affects all resource patches
+	"""
 	for patch in get_children():
 		patch.update_indicator_line()

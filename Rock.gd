@@ -6,13 +6,16 @@ onready var collider = $Area2D
 
 func _ready():
 	randomize()
-	generate_random_rock_formation(125, 50, 0.6, 25)
+	generate_random_rock_formation(125, 50, 0.6, 25) # example generation
 	
 func generate_random_rock_formation(distance_from_origin, depth, width_ratio, distance_between_points):
 	# distance_from_origin = how many pixels the center of the rock formation is from the tree base
 	# depth = how thick the rock slab is, in pixels
 	# width_ratio = how much of the semicircle the rock should occupy. use a number from 0 to 1, 0 = no rock, 1 = cover full layer
 	# distance_between_points = the distance between points on the inner and outer sides, in pixels. Decreasing this makes the rock look more jagged
+	"""Initializes the rock formation based on input parameters.
+	Returns nothing
+	"""
 	var point_list = []
 	var center_angle_ratio = lerp(width_ratio / 2, 1 - width_ratio / 2, randf())
 	var center_angle = lerp(0, PI, center_angle_ratio)
@@ -34,6 +37,9 @@ func generate_random_rock_formation(distance_from_origin, depth, width_ratio, di
 	poly_collide.polygon = point_list
 
 func get_random_vector2(max_length):
+	"""Gets a random vector with a max length of max_length
+	Returns the vector
+	"""
 	var random_angle = randf() * TAU
 	var random_length = randf() * max_length
 	return Vector2(random_length * cos(random_angle), random_length * sin(random_angle))

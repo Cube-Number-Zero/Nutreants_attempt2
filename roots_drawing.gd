@@ -39,13 +39,16 @@ func _physics_process(_delta):
 		update_root_network()
 		drawing = false
 	elif Input.is_mouse_button_pressed(1):
+		# The player is left clicking
 		if not drawing:
 			# Find the closest node to the mouse cursor
 			snap_to_node(mouse_position)
 	else:
+		# The player isn't drawing or erasing
 		drawing = false
 	
 	if drawing:
+		# Draw the root
 		if not too_close_to_previous_node(mouse_position):
 			if colliding_with_node(mouse_position):
 				drawing = false
@@ -53,6 +56,9 @@ func _physics_process(_delta):
 				add_node(mouse_position)
 		
 func snap_to_node(loc):
+	"""If a node is close enough to the <loc>, begin drawing from that node
+	Returns nothing
+	"""
 	var closest_node = tree_base.get_closest_node_to_point(loc)
 	if closest_node[1] <= pow(MAXIMUM_DRAW_SNAP_DISTANCE, 2):
 		# Begin drawing from the closest node
@@ -61,10 +67,18 @@ func snap_to_node(loc):
 		first_node_in_branch = true
 
 func update_root_network():
+	"""Calculates max_root_length and updates the size for all nodes
+	Returns nothing
+	"""
 	max_root_length = tree_base.get_longest_distance_from_origin()
+	ResourceManager.max_length = max_root_length - MINIMUM_NODE_DISTANCE
 	tree_base.get_size()
 
 func add_node(loc, connected = false, connected_resource_patch = null):
+	"""Adds a node at <loc>, if you can afford it
+	If the node to be added will be connected to a resource patch, the last two parameters are needed
+	Returns nothing
+	"""
 	var resource_cost = (loc - parent_node.get_global_position()).length() * sqrt(loc.y) * 0.005
 	if ResourceManager.can_afford(resource_cost) or connected:
 		
@@ -105,8 +119,14 @@ func add_node(loc, connected = false, connected_resource_patch = null):
 		drawing = false
 
 func colliding_with_node(loc):
+	"""Tests if a node at <loc> would be close enough to collide with another node
+	Returns the boolean result
+	"""
 	return tree_base.test_collision(loc, MINIMUM_UNRELATED_NODE_DISTANCE, parent_node.gather_nearby_nodes(1))
 
 func too_close_to_previous_node(loc):
+	"""Tests if a node at <loc> is too close to the previous node to draw a new node
+	Returns the boolean result
+	"""
 	var squared_distance_from_parent_node = loc.distance_squared_to(parent_node.get_global_position())
 	return squared_distance_from_parent_node < pow(MINIMUM_NODE_DISTANCE, 2)
