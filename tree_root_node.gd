@@ -1,6 +1,6 @@
 extends Node2D
 
-# Declare member variables here.
+const ROCKS_RESOURCE_COST_MULTIPLIER = 4 # Cost multiplier when drawing over rocky soil
 
 var is_tree_origin = true
 var distance_from_origin = 0
@@ -13,15 +13,17 @@ var permanent = false
 var size = 10
 var connected_to_patch = false # Is the node gathering resources from a patch?
 var connected_patch = null # The patch this node is connected to, if there is one
+var in_rocky_soil = false
+var node_resource_cost # how much it cost to create this node
 
 onready var line = $node_stuff/Line2D
+onready var collider = $node_stuff/Area2D
+onready var world = get_parent()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+	while world.name != "World":
+		world = world.get_parent()
 
 func at_end():
 	# Returns true if the node is at the end of a root
@@ -39,6 +41,8 @@ func get_closest_node_to_point(loc):
 		
 	# Tests to see if this node's children are closer and returns their result if so
 	elif get_child_count() == 2:
+		if $tree_root_node == null:
+			return own_result
 		var best_child = $tree_root_node.get_closest_node_to_point(loc)
 		if own_result[1] < best_child[1]:
 			return own_result
@@ -152,5 +156,25 @@ func get_size():
 		for childNode in get_children():
 			if childNode.name != "node_stuff":
 				size += childNode.get_size()
-	line.width = sqrt(size) * 0.5
+	if in_rocky_soil:
+		line.width = sqrt(size) * 0.5 / 2
+		line.default_color = Color(0.15, 0.1, 0.05)
+		line.z_index = 2.9
+	else:
+		line.width = sqrt(size) * 0.5
+		line.default_color = Color(0.402344, 0.330833, 0.259323)
+		line.z_index = 3
 	return size
+
+func _on_Area2D_area_entered(area):
+	if area.get_parent().name == "Rock":
+		in_rocky_soil = true
+	else:
+		in_rocky_soil = false
+	get_size()
+
+
+func _on_Timer_timeout():
+	collider.queue_free()
+	if in_rocky_soil:
+		ResourceManager.spend(node_resource_cost * (ROCKS_RESOURCE_COST_MULTIPLIER - 1))

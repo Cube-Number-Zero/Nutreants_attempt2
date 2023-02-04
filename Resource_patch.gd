@@ -1,15 +1,17 @@
 extends Node2D
 
-const MIN_VALUE = 1 # The income from the smallest resource vein
-const MAX_VALUE = 5 # The income from the largest resource vein
+
 const MIN_RADIUS = 2 # The radius of the smalled resource patch
-const MAX_RADIUS = 10 # The radius of the largest resource patch
+const MAX_RADIUS = 6 # The radius of the largest resource patch
 
 var polygon_radius
 var resources_per_second # How many resources the patch provides
 var acquired = false
+var lineless = false
 
 onready var polygon = $Polygon2D
+onready var line = $Line2D
+onready var game_world = get_parent().get_parent()
 
 func _ready():
 	randomize()
@@ -18,8 +20,9 @@ func _ready():
 	polygon.color = Color(0.5, 0.75, 1)
 	
 func randomize_patch_size():
-	var normalized_size = randf()
-	resources_per_second = lerp(MIN_VALUE, MAX_VALUE, normalized_size)
+	var normalized_size = randf() * randf()
+	resources_per_second = lerp(ResourceManager.MIN_RESOURCE_VALUE,\
+								ResourceManager.MAX_RESOURCE_VALUE, normalized_size)
 	polygon_radius = pow(lerp(sqrt(MIN_RADIUS), sqrt(MAX_RADIUS), normalized_size), 2)
 
 func connect_to():
@@ -30,6 +33,10 @@ func connect_to():
 		ResourceManager.resource_income += resources_per_second
 		ResourceManager.unexploited_resource_income -= resources_per_second
 		polygon.color = Color(0.5, 1, 0.75)
+		if not lineless:
+			line.queue_free()
+		lineless = true
+		
 
 func disconnect_from():
 	if acquired:
@@ -71,3 +78,23 @@ func place_points():
 	p6 -= center
 	polygon.polygon = [p1, p2, p3, p4, p5, p6]
 	
+func update_indicator_line():
+	if not lineless:
+		line.position = Vector2(512, 300) - position - 1 * game_world.position
+		if not inside_camera_view(get_global_position(), 50):
+			line.set_point_position(0, (-line.position).normalized() * 290)
+			line.set_point_position(1, (-line.position).normalized() * 300)
+			line.visible = true
+		else:
+			line.visible = false
+
+func inside_camera_view(loc, tolerance):
+	if loc.x < -tolerance:
+		return false
+	if loc.y < -tolerance:
+		return false
+	if loc.x >= 1024 + tolerance:
+		return false
+	if loc.y >= 600 + tolerance:
+		return false
+	return true
