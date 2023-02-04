@@ -5,6 +5,7 @@ extends Node2D
 var is_tree_origin = true
 var distance_from_origin = 0
 var branch_ID = "0"
+var longest_distance = 0
 # The branch ID differentiates nodes that have branched off in different ways. 
 # Each time there is a fork in the root system, each path has a different number added to its ID
 # they look like this: 0.1.1.0.2.0
@@ -18,7 +19,7 @@ func _process(delta):
 	pass
 
 func get_closest_node_to_point(loc):
-	var own_result = [self, loc.distance_squared_to(self.get_global_position())]
+	var own_result = [self, loc.distance_squared_to(get_global_position())]
 	if get_child_count() == 1:
 		return own_result
 	elif get_child_count() == 2:
@@ -55,12 +56,29 @@ func calculate_branch_ID(parent_branch_ID):
 func get_next_branch_ID():
 	return branch_ID + "." + str(get_child_count() - 1)
 
-func test_collision(loc, collision_distance, ignored_loc):
-	if self.get_global_position().distance_squared_to(loc) <= pow(collision_distance, 2):
-		if self.get_global_position() != ignored_loc:
+func test_collision(loc, collision_distance, ignored_locs):
+	if get_global_position().distance_squared_to(loc) <= pow(collision_distance, 2):
+		if not get_global_position() in ignored_locs:
 			return true
 	for childNode in get_children():
 		if childNode.name != "node_stuff":
-			if childNode.test_collision(loc, collision_distance, ignored_loc):
+			if childNode.test_collision(loc, collision_distance, ignored_locs):
 				return true
 	return false
+	
+func get_longest_distance_from_origin():
+	if get_child_count() == 1:
+		return get_global_position().distance_to(get_parent().get_global_position())
+	var longest_child_distance = null
+	for childNode in get_children():
+		if childNode.name != "node_stuff":
+			var this_child_distance = childNode.get_longest_distance_from_origin()
+			this_child_distance += childNode.get_global_position().distance_to(get_global_position())
+			if longest_child_distance == null:
+				longest_child_distance = this_child_distance
+			else:
+				longest_child_distance = max(longest_child_distance, this_child_distance)
+	return longest_child_distance
+
+func update_line2D():
+	$node_stuff/Line2D.set_point_position(0, get_parent().get_global_position() - get_global_position())
