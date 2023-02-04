@@ -5,10 +5,11 @@ extends Node2D
 var is_tree_origin = true
 var distance_from_origin = 0
 var branch_ID = "0"
-var longest_distance = 0
 # The branch ID differentiates nodes that have branched off in different ways. 
 # Each time there is a fork in the root system, each path has a different number added to its ID
 # they look like this: 0.1.1.0.2.0
+var longest_distance = 0
+var permanent = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -66,17 +67,17 @@ func calculate_branch_ID(parent_branch_ID):
 func get_next_branch_ID():
 	return branch_ID + "." + str(get_child_count() - 1)
 
-func test_collision(loc, collision_distance, ignored_locs=[]):
+func test_collision(loc, collision_distance, ignored_nodes=[]):
 	"""Tests to see if a location is within collision distance of a node
-	Can provide locations to ignore in the search
+	Can provide nodes to ignore in the search
 	Returns a float distance
 	"""
 	if get_global_position().distance_squared_to(loc) <= pow(collision_distance, 2):
-		if not get_global_position() in ignored_locs:
+		if not self in ignored_nodes:
 			return true
 	for childNode in get_children():
 		if childNode.name != "node_stuff":
-			if childNode.test_collision(loc, collision_distance, ignored_locs):
+			if childNode.test_collision(loc, collision_distance, ignored_nodes):
 				return true
 	return false
 	
@@ -103,3 +104,45 @@ func update_line2D():
 	Only affects the specific node it's called on
 	"""
 	$node_stuff/Line2D.set_point_position(0, get_parent().get_global_position() - get_global_position())
+
+func try_to_erase_at_location(loc, radius):
+	"""Tries to erase nodes near a location
+	Call from the base tree_root_node
+	"""
+	if get_child_count() == 1 and not permanent:
+		if loc.distance_squared_to(get_global_position()) <= pow(radius, 2):
+			queue_free()
+	else:
+		for childNode in get_children():
+			if childNode.name != "node_stuff":
+				childNode.try_to_erase_at_location(loc,radius)
+
+func gather_upwards_node(levels):
+	if get_parent().name == "roots" or levels <= 0:
+		return self
+	return get_parent().gather_upwards_node(levels - 1)
+		
+func gather_downwards_nodes(levels):
+	if levels <= 0 or get_child_count() == 1:
+		return [self]
+	var output_list = [self]
+	for childNode in get_children():
+		if childNode.name != "node_stuff":
+			output_list.append_array(childNode.gather_downwards_nodes(levels - 1))
+	return output_list
+		
+func gather_nearby_nodes(levels):
+	"""Returns a list of all nodes within <levels> from a node
+	"""
+	return gather_upwards_node(levels).gather_downwards_nodes(levels * 2)
+
+
+
+
+
+
+
+
+
+
+
