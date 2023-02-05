@@ -103,9 +103,7 @@ func add_node(loc, connected = false, connected_resource_patch = null):
 			new_node.connected_to_patch = true
 			new_node.connected_patch = connected_resource_patch
 			connected_resource_patch.connect_to()
-		else:
-			# Play sound
-			SoundPlayer.play_grow_root(loc)
+			SoundPlayer.play_collect_resources(loc)
 		
 		ResourceManager.spend(resource_cost)
 		
