@@ -22,7 +22,7 @@ func _process(_delta):
 				get_tree().change_scene("World.tscn")
 		elif (mouse_position.x >= $QuitButton.rect_position.x and mouse_position.x <= $QuitButton.rect_position.x + $QuitButton.rect_size.x * $QuitButton.rect_scale.x) and (mouse_position.y >= $QuitButton.rect_position.y and mouse_position.y <= $QuitButton.rect_position.y + $QuitButton.rect_size.y  * $QuitButton.rect_scale.y):
 				if play_menu_hover:
-					SoundPlayer.play_menu_hover($QuitButton.rect_position)
+					SoundPlayer.play_menu_hover()
 					play_menu_hover = false
 					$QuitButton.color = Color(129.0/255.0, 200.0/255.0,76.0/255.0)
 					$QuitButton.rect_scale.x = 1.25
