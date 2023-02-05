@@ -78,6 +78,12 @@ func game_over_effects(delta):
 	roots.shrivel()
 	if not game_over_wait:
 		if Input.is_mouse_button_pressed(1):
+<<<<<<< Updated upstream
+=======
+			Hud.visible = false
+			Hud.resource_count.visible = true
+			Hud.score_count.text = "Score: "
+>>>>>>> Stashed changes
 			Hud.score_count.visible = false
 			get_tree().change_scene("MainMenu.tscn")
 	
