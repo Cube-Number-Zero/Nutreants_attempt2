@@ -101,6 +101,14 @@ func update_indicator_line():
 			line.visible = true
 		else:
 			line.visible = false
+			
+func disable_indicator_line():
+	"""Disables this patch's inicator arrow
+	Returns nothing
+	"""
+	if not lineless:
+		lineless = true
+		line.queue_free()
 
 func is_inside_camera_view(loc, tolerance=0):
 	"""Returns true if <loc> is inside the player's view, or within a certain <tolerance>

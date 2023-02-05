@@ -15,6 +15,7 @@ var connected_to_patch = false # Is the node gathering resources from a patch?
 var connected_patch = null # The patch this node is connected to, if there is one
 var in_rocky_soil = false
 var node_resource_cost # how much it cost to create this node
+var shriveled = false
 
 onready var line = $node_stuff/Line2D
 onready var collider = $node_stuff/Area2D
@@ -23,6 +24,7 @@ onready var resource_manager
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	randomize()
 	while world.name != "World":
 		world = world.get_parent()
 	resource_manager = world.ResourceManager
@@ -174,13 +176,33 @@ func get_size():
 				size += childNode.get_size()
 	if in_rocky_soil:
 		line.width = sqrt(size) * 0.5 / 2
-		line.default_color = Color(0.15, 0.1, 0.05)
+		if not shriveled: line.default_color = Color(0.15, 0.1, 0.05)
 		line.z_index = 2.9
 	else:
 		line.width = sqrt(size) * 0.5
-		line.default_color = Color(0.402344, 0.330833, 0.259323)
+		if not shriveled: line.default_color = Color(0.402344, 0.330833, 0.259323)
 		line.z_index = 3
 	return size
+	
+func shrivel():
+	"""Shrivels up this node if at the end, otherwise sends the signal to this node's children"""
+	var all_children_shriveled = true
+	for childNode in get_children():
+		if childNode.name != "node_stuff":
+			if not childNode.shriveled:
+				all_children_shriveled = false
+				childNode.shrivel()
+	if all_children_shriveled:
+		if randf() > 0.5:
+			shriveled = true
+			if in_rocky_soil:
+				line.default_color = Color(0.1, 0.1, 0.1)
+				line.z_index = 2.7
+			else:
+				line.default_color = Color(0.330833, 0.330833, 0.330833)
+				line.z_index = 2.8
+			if connected_to_patch:
+				connected_patch.disconnect_from()
 
 func _on_Area2D_area_entered(area):
 	if "Rock" in area.get_parent().name:

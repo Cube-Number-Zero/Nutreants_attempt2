@@ -36,8 +36,8 @@ func _physics_process(_delta):
 	var mouse_position = get_viewport().get_mouse_position()
 	if Input.is_mouse_button_pressed(2):
 		# The player is right clicking
-		tree_base.try_to_erase_at_location(mouse_position, ERASER_RADIUS)
-		update_root_network()
+		# tree_base.try_to_erase_at_location(mouse_position, ERASER_RADIUS)
+		# update_root_network()
 		drawing = false
 	elif Input.is_mouse_button_pressed(1):
 		# The player is left clicking
@@ -80,7 +80,7 @@ func add_node(loc, connected = false, connected_resource_patch = null):
 	If the node to be added will be connected to a resource patch, the last two parameters are needed
 	Returns nothing
 	"""
-	var resource_cost = (loc - parent_node.get_global_position()).length() * sqrt(loc.y) * 0.005
+	var resource_cost = (loc - parent_node.get_global_position()).length() * sqrt(abs(loc.y)) * resource_manager.ROOT_CONSTRUCTION_COST_MULTIPLIER
 	if resource_manager.can_afford(resource_cost) or connected:
 		
 		var new_node = NEW_NODE.instance()
@@ -129,3 +129,9 @@ func too_close_to_previous_node(loc):
 	"""
 	var squared_distance_from_parent_node = loc.distance_squared_to(parent_node.get_global_position())
 	return squared_distance_from_parent_node < pow(MINIMUM_NODE_DISTANCE, 2)
+
+func shrivel():
+	"""Shrivels up the root system, for the end of the game
+	"""
+	tree_base.shrivel()
+	update_root_network()

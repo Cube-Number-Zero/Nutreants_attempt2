@@ -43,3 +43,9 @@ func update_indicator_lines():
 	"""
 	for patch in get_children():
 		patch.update_indicator_line()
+
+func disable_indicator_lines():
+	"""Disables the indicator lines that show when a patch is far away.  Affects all resource patches
+	"""
+	for patch in get_children():
+		patch.disable_indicator_line()
