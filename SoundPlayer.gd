@@ -11,21 +11,21 @@ onready var menu_sound_hover := $menu_hover
 func _ready():
 	randomize()
 
-func play_grow_root(loc):
+func play_grow_root(loc: Vector2):
 	"""Plays the grow_root sound effect at <loc>
 	Returns nothing
 	"""
 	grow_root.position = loc
 	grow_root.play(0.0)
 
-func play_rock_grow(loc):
+func play_rock_grow(loc: Vector2):
 	"""Plays the rock_grow sound effect at <loc>
 	Returns nothing
 	"""
 	rock_grow.position = loc
 	rock_grow.play(0.1)
 
-func play_collect_resources(loc):
+func play_collect_resources(loc: Vector2):
 	"""Plays the collect sound effect at <loc>
 	Returns nothing
 	"""
@@ -34,6 +34,5 @@ func play_collect_resources(loc):
 	collect.position = loc
 	collect.play(0.0)
 	
-func play_menu_hover(loc):
-	menu_sound_hover.position = loc
+func play_menu_hover():
 	menu_sound_hover.play(0.0)

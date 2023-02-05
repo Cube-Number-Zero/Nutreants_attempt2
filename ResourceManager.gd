@@ -44,13 +44,13 @@ func _process(delta):
 			get_parent().game_over_effects_single()
 			game_over = true
 
-func spend(cost):
+func spend(cost: float):
 	"""Spends <cost> resources
 	Returns nothing
 	"""
 	resources -= cost
 
-func can_afford(cost):
+func can_afford(cost: float):
 	"""Returns true if the player has at least <cost> resources in reserve
 	"""
 	return cost < resources

@@ -34,5 +34,5 @@ stream = ExtResource( 3 )
 volume_db = -10.0
 pitch_scale = 2.0
 
-[node name="menu_hover" type="AudioStreamPlayer2D" parent="."]
+[node name="menu_hover" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 5 )

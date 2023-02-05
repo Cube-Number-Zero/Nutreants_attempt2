@@ -15,7 +15,7 @@ func _process(_delta):
 	if resource_manager.unexploited_resource_income < TOTAL_RESOURCE_INCOME_GOAL:
 		generate_resource_patch()
 
-func test_connection(loc, connection_range):
+func test_connection(loc: Vector2, connection_range: int):
 	"""Tests to see if any resource patches are within <connection_range> of <loc>
 	Returns an array with a boolean for if any patches are close enough and the patch, if there is one
 	"""
