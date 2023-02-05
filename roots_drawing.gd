@@ -5,7 +5,7 @@ class_name Roots_Controller
 # Declare member variables here.
 
 const MINIMUM_NODE_DISTANCE = 6 # How close adjacent root nodes can be (lowering this makes the vines more smooth at the cost of performance)
-const MAXIMUM_DRAW_SNAP_DISTANCE = 10 # How close the cursor needs to be to a node to start drawing from it
+const MAXIMUM_DRAW_SNAP_DISTANCE = 15 # How close the cursor needs to be to a node to start drawing from it
 const MINIMUM_UNRELATED_NODE_DISTANCE = 8 # How close a root can grow to a seperate root
 const ERASER_RADIUS = 15
 const MINIMUM_RESOURCE_SNAP_DISTANCE = 12 # How close a node has to be to a resource patch to snap to it and begin collecting
@@ -76,7 +76,7 @@ func update_root_network():
 	resource_manager.max_length = max_root_length - MINIMUM_NODE_DISTANCE
 	tree_base.get_size()
 
-func add_node(loc: Vector2, connected: bool = false, connected_resource_patch: Resource_Patch = null):
+func add_node(loc: Vector2, connected: bool = false, connected_resource_patch = null):
 	"""Adds a node at <loc>, if you can afford it
 	If the node to be added will be connected to a resource patch, the last two parameters are needed
 	Returns nothing
