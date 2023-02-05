@@ -1,4 +1,5 @@
 extends Node2D
+class_name Root_Node
 
 const ROCKS_RESOURCE_COST_MULTIPLIER = 4 # Cost multiplier when drawing over rocky soil
 
@@ -25,7 +26,7 @@ onready var resource_manager
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	randomize()
-	while world.name != "World":
+	while not world is Game_World:
 		world = world.get_parent()
 	resource_manager = world.ResourceManager
 
@@ -56,7 +57,7 @@ func get_closest_node_to_point(loc):
 	else:
 		var children_result_list = []
 		for childNode in get_children():
-			if childNode.name != "node_stuff":
+			if "tree_root_node" in childNode.name:
 				children_result_list.append(childNode.get_closest_node_to_point(loc))
 		var minimum_distance_found = children_result_list[0]
 		for output in children_result_list:
@@ -77,7 +78,7 @@ func calculate_branch_ID(parent_branch_ID):
 	elif get_child_count() > 2:
 		var choice_ID = 0
 		for child in get_children():
-			if child.name != "node_stuff":
+			if "tree_root_node" in child.name:
 				child.calculate_branch_ID(parent_branch_ID + "." + str(choice_ID))
 				choice_ID += 1
 
@@ -96,7 +97,7 @@ func test_collision(loc, collision_distance, ignored_nodes = []):
 		if not self in ignored_nodes:
 			return true
 	for childNode in get_children():
-		if childNode.name != "node_stuff":
+		if "tree_root_node" in childNode.name:
 			if childNode.test_collision(loc, collision_distance, ignored_nodes):
 				return true
 	return false
@@ -110,7 +111,7 @@ func get_longest_distance_from_origin():
 		return get_global_position().distance_to(get_parent().get_global_position())
 	var longest_child_distance = null
 	for childNode in get_children():
-		if childNode.name != "node_stuff":
+		if "tree_root_node" in childNode.name:
 			var this_child_distance = childNode.get_longest_distance_from_origin()
 			this_child_distance += childNode.get_global_position().distance_to(get_global_position())
 			if longest_child_distance == null:
@@ -137,14 +138,14 @@ func try_to_erase_at_location(loc, radius):
 				connected_patch.disconnect_from()
 	else:
 		for childNode in get_children():
-			if childNode.name != "node_stuff":
+			if "tree_root_node" in childNode.name:
 				childNode.try_to_erase_at_location(loc,radius)
 
 func gather_upwards_node(levels):
 	"""Returns the node <levels> levels above this node
 	(this node's parent is one level above, and that node's parent is two levels above)
 	"""
-	if get_parent().name == "roots" or levels <= 0:
+	if get_parent() is Roots_Controller or levels <= 0:
 		return self
 	return get_parent().gather_upwards_node(levels - 1)
 
@@ -155,7 +156,7 @@ func gather_downwards_nodes(levels):
 		return [self]
 	var output_list = [self]
 	for childNode in get_children():
-		if childNode.name != "node_stuff":
+		if "tree_root_node" in childNode.name:
 			output_list.append_array(childNode.gather_downwards_nodes(levels - 1))
 	return output_list
 
@@ -172,23 +173,25 @@ func get_size():
 	size = position.length()
 	if not at_end():
 		for childNode in get_children():
-			if childNode.name != "node_stuff":
+			if "tree_root_node" in childNode.name:
 				size += childNode.get_size()
 	if in_rocky_soil:
 		line.width = sqrt(size) * 0.5 / 2
-		if not shriveled: line.default_color = Color(0.15, 0.1, 0.05)
-		line.z_index = 2.9
+		if not shriveled:
+			line.default_color = Color(0.15, 0.1, 0.05)
+			line.z_index = 2.9
 	else:
 		line.width = sqrt(size) * 0.5
-		if not shriveled: line.default_color = Color(0.402344, 0.330833, 0.259323)
-		line.z_index = 3
+		if not shriveled:
+			line.default_color = Color(0.402344, 0.330833, 0.259323)
+			line.z_index = 3
 	return size
 	
 func shrivel():
 	"""Shrivels up this node if at the end, otherwise sends the signal to this node's children"""
 	var all_children_shriveled = true
 	for childNode in get_children():
-		if childNode.name != "node_stuff":
+		if "tree_root_node" in childNode.name:
 			if not childNode.shriveled:
 				all_children_shriveled = false
 				childNode.shrivel()
@@ -205,7 +208,7 @@ func shrivel():
 				connected_patch.disconnect_from()
 
 func _on_Area2D_area_entered(area):
-	if "Rock" in area.get_parent().name:
+	if area.get_parent() is Rock_Area:
 		in_rocky_soil = true
 	else:
 		in_rocky_soil = false

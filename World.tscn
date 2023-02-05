@@ -35,6 +35,8 @@ script = ExtResource( 5 )
 script = ExtResource( 4 )
 
 [node name="ResourceManager" parent="." instance=ExtResource( 6 )]
+RESOURCE_SCARCITY = 40.0
+START_RESOURCE_DISTANCE = 125.0
 
 [node name="game_end_timer" type="Timer" parent="."]
 one_shot = true
