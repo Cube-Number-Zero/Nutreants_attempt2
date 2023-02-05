@@ -18,15 +18,15 @@ var in_rocky_soil = false
 var node_resource_cost # how much it cost to create this node
 var shriveled = false
 
-onready var line = $node_stuff/Line2D
-onready var collider = $node_stuff/Area2D
+onready var line: = $node_stuff/Line2D
+onready var collider: = $node_stuff/Area2D
 onready var world = get_parent()
-onready var resource_manager
+onready var resource_manager: Resource_Manager
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	randomize()
-	while not world is Game_World:
+	while world.name != "World":
 		world = world.get_parent()
 	resource_manager = world.ResourceManager
 
@@ -68,7 +68,7 @@ func get_closest_node_to_point(loc):
 		else:
 			return minimum_distance_found
 
-func calculate_branch_ID(parent_branch_ID):
+func calculate_branch_ID(parent_branch_ID: String):
 	"""Unused, call from the base tree_root_node
 	Calculates branch_IDs for all nodes
 	"""
@@ -88,7 +88,7 @@ func get_next_branch_ID():
 	"""
 	return branch_ID + "." + str(get_child_count() - 1)
 
-func test_collision(loc, collision_distance, ignored_nodes = []):
+func test_collision(loc: Vector2, collision_distance, ignored_nodes = []):
 	"""Tests to see if a location is within collision distance of a node
 	Can provide nodes to ignore in the search
 	Returns a boolean result
@@ -141,7 +141,7 @@ func try_to_erase_at_location(loc, radius):
 			if "tree_root_node" in childNode.name:
 				childNode.try_to_erase_at_location(loc,radius)
 
-func gather_upwards_node(levels):
+func gather_upwards_node(levels: int):
 	"""Returns the node <levels> levels above this node
 	(this node's parent is one level above, and that node's parent is two levels above)
 	"""
@@ -149,7 +149,7 @@ func gather_upwards_node(levels):
 		return self
 	return get_parent().gather_upwards_node(levels - 1)
 
-func gather_downwards_nodes(levels):
+func gather_downwards_nodes(levels: int):
 	"""Returns an array of all nodes <levels> levels below this node
 	"""
 	if levels <= 0 or at_end():
@@ -160,7 +160,7 @@ func gather_downwards_nodes(levels):
 			output_list.append_array(childNode.gather_downwards_nodes(levels - 1))
 	return output_list
 
-func gather_nearby_nodes(levels):
+func gather_nearby_nodes(levels: int):
 	"""Returns a list of all nodes within <levels> from this node
 	"""
 	return gather_upwards_node(levels).gather_downwards_nodes(levels * 2)

@@ -4,7 +4,7 @@ const ROCK_GENERATION_DISTANCE = 300 # How far away to place rocks
 
 var rocks_generated_distance = 150 # How far rocks have been generated to
 
-const NEW_ROCK = preload("res://Rock.tscn")
+const NEW_ROCK := preload("res://Rock.tscn")
 
 func _ready():
 	randomize()

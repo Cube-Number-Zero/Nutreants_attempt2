@@ -1,12 +1,12 @@
 extends Node
 
-onready var grow_root = $grow_root_sound_player
-onready var rock_grow = $rocky_grow_root_sound_player
-onready var collect_1 = $collect_resources_sound_player_1
-onready var collect_2 = $collect_resources_sound_player_2
-onready var collect_3 = $collect_resources_sound_player_3
-onready var collect_4 = $collect_resources_sound_player_4
-onready var menu_sound_hover = $menu_hover
+onready var grow_root := $grow_root_sound_player
+onready var rock_grow := $rocky_grow_root_sound_player
+onready var collect_1 := $collect_resources_sound_player_1
+onready var collect_2 := $collect_resources_sound_player_2
+onready var collect_3 := $collect_resources_sound_player_3
+onready var collect_4 := $collect_resources_sound_player_4
+onready var menu_sound_hover := $menu_hover
 
 func _ready():
 	randomize()

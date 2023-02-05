@@ -9,16 +9,16 @@ const MAXIMUM_DRAW_SNAP_DISTANCE = 10 # How close the cursor needs to be to a no
 const MINIMUM_UNRELATED_NODE_DISTANCE = 8 # How close a root can grow to a seperate root
 const ERASER_RADIUS = 15
 const MINIMUM_RESOURCE_SNAP_DISTANCE = 12 # How close a node has to be to a resource patch to snap to it and begin collecting
-const NEW_NODE = preload("res://tree_root_node.tscn")
+const NEW_NODE := preload("res://tree_root_node.tscn")
 
 var drawing = false # Is the player drawing something?
-onready var parent_node = $tree_root_node # The parent node to create new nodes from
+onready var parent_node := $tree_root_node # The parent node to create new nodes from
 var first_node_in_branch = true # Unused
-var drawing_branch_ID = "" # Unused, for identifying the specific branch a root is on
+var drawing_branch_ID: String = "" # Unused, for identifying the specific branch a root is on
 var max_root_length = MINIMUM_NODE_DISTANCE # the longest root from the base of the tree; use this (at least partially) for resource consumption scaling
-onready var tree_base  = $tree_root_node # Convinience variable for the base of the tree
-onready var resource_patches = get_parent().get_child(1)
-onready var resource_manager = get_parent().get_child(3)
+onready var tree_base  := $tree_root_node # Convinience variable for the base of the tree
+onready var resource_patches: Resouce_Patch_Parent = get_parent().get_child(1)
+onready var resource_manager: Resource_Manager = get_parent().get_child(3)
 var world_scale
 
 # Called when the node enters the scene tree for the first time.
