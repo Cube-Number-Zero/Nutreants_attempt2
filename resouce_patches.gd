@@ -12,7 +12,7 @@ onready var rock_generator = get_parent().get_child(2)
 const NEW_RESOURCE := preload("res://Resource_patch.tscn")
 
 func _process(_delta):
-	if resource_manager.unexploited_resource_income < TOTAL_RESOURCE_INCOME_GOAL:
+	while resource_manager.unexploited_resource_income < TOTAL_RESOURCE_INCOME_GOAL:
 		generate_resource_patch()
 
 func test_connection(loc: Vector2, connection_range: int):
