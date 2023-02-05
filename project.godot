@@ -25,6 +25,11 @@ _global_script_classes=[ {
 "path": "res://ResourceManager.gd"
 }, {
 "base": "Node2D",
+"class": "Rock_Area",
+"language": "GDScript",
+"path": "res://Rock.gd"
+}, {
+"base": "Node2D",
 "class": "Root_Node",
 "language": "GDScript",
 "path": "res://tree_root_node.gd"

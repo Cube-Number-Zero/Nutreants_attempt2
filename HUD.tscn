@@ -27,7 +27,6 @@ margin_top = 249.0
 margin_right = 682.0
 margin_bottom = 289.0
 mouse_default_cursor_shape = 2
-color = Color( 1, 0, 0, 1 )
 
 [node name="Label" type="Label" parent="ColorRect"]
 margin_right = 340.0
