@@ -76,7 +76,7 @@ func update_root_network():
 	resource_manager.max_length = max_root_length - MINIMUM_NODE_DISTANCE
 	tree_base.get_size()
 
-func add_node(loc: Vector2, connected: bool = false, connected_resource_patch = null):
+func add_node(loc: Vector2, connected: bool = false, connected_resource_patch: Resource_Patch = null):
 	"""Adds a node at <loc>, if you can afford it
 	If the node to be added will be connected to a resource patch, the last two parameters are needed
 	Returns nothing
