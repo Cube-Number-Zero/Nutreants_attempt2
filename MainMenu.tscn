@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://StartScreen.gd" type="Script" id=1]
+[ext_resource path="res://Assets/nutreants.png" type="Texture" id=2]
 
 [node name="StartScreen" type="Node2D"]
 script = ExtResource( 1 )
@@ -12,39 +13,40 @@ margin_left = 1.0
 margin_top = 1.0
 margin_right = 1027.0
 margin_bottom = 599.0
-color = Color( 0, 0, 0, 1 )
+color = Color( 0.298039, 0.537255, 0.258824, 1 )
 
 [node name="NewGame" type="ColorRect" parent="."]
-margin_left = 405.0
-margin_top = 267.0
-margin_right = 705.0
-margin_bottom = 307.0
+margin_left = 352.0
+margin_top = 233.0
+margin_right = 672.0
+margin_bottom = 273.0
 
 [node name="Label" type="Label" parent="NewGame"]
-margin_left = 112.0
-margin_top = 12.0
-margin_right = 208.0
-margin_bottom = 26.0
+margin_right = 320.0
+margin_bottom = 40.0
 custom_colors/font_color = Color( 1, 0, 0, 1 )
-custom_colors/font_outline_modulate = Color( 1, 1, 1, 1 )
 text = "start game"
 align = 1
 valign = 1
+uppercase = true
 
-[node name="quit" type="ColorRect" parent="."]
-margin_left = 399.0
-margin_top = 379.0
-margin_right = 736.0
-margin_bottom = 419.0
-rect_pivot_offset = Vector2( 237, 38 )
+[node name="Nutreants" type="Sprite" parent="."]
+position = Vector2( 512, 139 )
+scale = Vector2( 3.25, 3.25 )
+texture = ExtResource( 2 )
 
-[node name="Label" type="Label" parent="quit"]
-margin_left = 112.0
-margin_top = 12.0
-margin_right = 208.0
-margin_bottom = 26.0
+[node name="NewGame2" type="ColorRect" parent="."]
+margin_left = 352.0
+margin_top = 324.0
+margin_right = 672.0
+margin_bottom = 364.0
+
+[node name="Label" type="Label" parent="NewGame2"]
+margin_right = 320.0
+margin_bottom = 40.0
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 custom_colors/font_outline_modulate = Color( 1, 1, 1, 1 )
 text = "quit"
 align = 1
 valign = 1
+uppercase = true
