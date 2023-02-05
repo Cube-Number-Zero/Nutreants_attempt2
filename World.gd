@@ -69,7 +69,6 @@ func game_over_effects_single():
 	Hud.score_count.text += str(round(ResourceManager.score))
 	resource_patches.disable_indicator_lines()
 	$game_end_timer.start()
-	
 
 func game_over_effects(delta):
 	"""Performs all game over effects that should be called every frame"""
@@ -78,6 +77,7 @@ func game_over_effects(delta):
 	roots.shrivel()
 	if not game_over_wait:
 		if Input.is_mouse_button_pressed(1):
+			Hud.score_count.visible = false
 			get_tree().change_scene("MainMenu.tscn")
 	
 
