@@ -6,10 +6,10 @@ class_name Game_World
 const PAN_SPEED = 512
 const PAN_ACCELERATION = 1024
 
-onready var resource_patches = $resouce_patches
-onready var rocks = $rocks
-onready var roots = $roots
-onready var ResourceManager = $ResourceManager
+onready var resource_patches := $resouce_patches
+onready var rocks := $rocks
+onready var roots := $roots
+onready var ResourceManager := $ResourceManager
 
 var camera_pan_velocity = Vector2.ZERO
 var is_game_over = false

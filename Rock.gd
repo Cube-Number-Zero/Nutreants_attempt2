@@ -1,9 +1,9 @@
 extends Node2D
 class_name Rock_Area
 
-onready var poly_visible = $Polygon2D
-onready var poly_collide = $Area2D/CollisionPolygon2D
-onready var collider = $Area2D
+onready var poly_visible := $Polygon2D
+onready var poly_collide := $Area2D/CollisionPolygon2D
+onready var collider := $Area2D
 
 func _ready():
 	randomize()

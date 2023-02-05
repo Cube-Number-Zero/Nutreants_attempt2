@@ -9,10 +9,10 @@ var resources_per_second # How many resources the patch provides
 var acquired = false
 var lineless = false
 
-onready var polygon = $Polygon2D
-onready var line = $Line2D
-onready var game_world = get_parent().get_parent()
-onready var resource_manager = game_world.ResourceManager
+onready var polygon := $Polygon2D
+onready var line := $Line2D
+onready var game_world := get_parent().get_parent()
+onready var resource_manager: Resource_Manager = game_world.ResourceManager
 
 func _ready():
 	randomize()

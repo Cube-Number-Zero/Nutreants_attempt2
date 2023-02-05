@@ -1,5 +1,5 @@
 extends Node
-
+class_name Resource_Manager
 
 # v v v Use these to balance the game! v v v
 export(float) var MAX_RESOURCE_COST_MULTIPLIER = 0.001 # Cost multiplier for the longest path

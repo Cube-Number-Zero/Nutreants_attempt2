@@ -1,4 +1,5 @@
 extends Node
+class_name Resouce_Patch_Parent
 
 const TOTAL_RESOURCE_INCOME_GOAL = 15.0
 # Will generate more resource patches until the combined income of
@@ -8,7 +9,7 @@ onready var resource_manager = get_parent().get_child(3)
 onready var resource_generator_radius = resource_manager.START_RESOURCE_DISTANCE # How far to generate resources. Increases over time.
 onready var rock_generator = get_parent().get_child(2)
 
-const NEW_RESOURCE = preload("res://Resource_patch.tscn")
+const NEW_RESOURCE := preload("res://Resource_patch.tscn")
 
 func _process(_delta):
 	if resource_manager.unexploited_resource_income < TOTAL_RESOURCE_INCOME_GOAL:
