@@ -1,4 +1,5 @@
 extends Node2D
+class_name Game_World
 
 # Declare member variables here.
 
@@ -37,20 +38,22 @@ func _process(delta):
 			input_vector += Vector2(0, 1)
 		if Input.is_action_pressed("ui_left"):
 			input_vector -= Vector2(1, 0)
+		input_vector = input_vector.normalized() * PAN_SPEED
+		camera_pan_velocity = camera_pan_velocity.move_toward(input_vector, PAN_ACCELERATION * delta)
+		position -= camera_pan_velocity * delta
+		
 		if Input.is_action_pressed("ui_cancel"):
 			if not esc_down:
 				Hud.quit_button.visible = not Hud.quit_button.visible
 			esc_down = true
 		if not Input.is_action_pressed("ui_cancel"):
 			esc_down = false
+			
 		if Hud.quit_button.visible:
 			if Input.is_mouse_button_pressed(1):
 				if mouse_position.x >= Hud.quit_button.rect_position.x and mouse_position.x <= Hud.quit_button.rect_position.x + 340:
 					if mouse_position.y >= Hud.quit_button.rect_position.y and mouse_position.y <= Hud.quit_button.rect_position.y + 40:
 						get_tree().quit()
-		input_vector = input_vector.normalized() * PAN_SPEED
-		camera_pan_velocity = camera_pan_velocity.move_toward(input_vector, PAN_ACCELERATION * delta)
-		position -= camera_pan_velocity * delta
 	else:
 		game_over_effects(delta)
 	if position.y > 0:

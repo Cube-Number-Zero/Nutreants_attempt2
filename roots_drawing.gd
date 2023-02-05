@@ -1,4 +1,5 @@
 extends Node
+class_name Roots_Controller
 
 
 # Declare member variables here.
