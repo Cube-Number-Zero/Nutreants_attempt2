@@ -8,6 +8,34 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "Game_World",
+"language": "GDScript",
+"path": "res://World.gd"
+}, {
+"base": "Node2D",
+"class": "Rock_Area",
+"language": "GDScript",
+"path": "res://Rock.gd"
+}, {
+"base": "Node2D",
+"class": "Root_Node",
+"language": "GDScript",
+"path": "res://tree_root_node.gd"
+}, {
+"base": "Node",
+"class": "Roots_Controller",
+"language": "GDScript",
+"path": "res://roots_drawing.gd"
+} ]
+_global_script_class_icons={
+"Game_World": "",
+"Rock_Area": "",
+"Root_Node": "",
+"Roots_Controller": ""
+}
+
 [application]
 
 config/name="Nutreants"
