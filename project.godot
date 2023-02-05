@@ -8,6 +8,16 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Node2D",
+"class": "Game_World",
+"language": "GDScript",
+"path": "res://World.gd"
+} ]
+_global_script_class_icons={
+"Game_World": ""
+}
+
 [application]
 
 config/name="Nutreants"

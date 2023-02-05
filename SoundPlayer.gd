@@ -6,6 +6,7 @@ onready var collect_1 = $collect_resources_sound_player_1
 onready var collect_2 = $collect_resources_sound_player_2
 onready var collect_3 = $collect_resources_sound_player_3
 onready var collect_4 = $collect_resources_sound_player_4
+onready var menu_sound_hover = $menu_hover
 
 func _ready():
 	randomize()
@@ -32,3 +33,7 @@ func play_collect_resources(loc):
 	collect = collect[randi() % 4]
 	collect.position = loc
 	collect.play(0.0)
+	
+func play_menu_hover(loc):
+	menu_sound_hover.position = loc
+	menu_sound_hover.play(0.0)
