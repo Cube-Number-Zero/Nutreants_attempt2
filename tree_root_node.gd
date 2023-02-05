@@ -11,7 +11,7 @@ var branch_ID = "0"
 # they look like this: 0.1.1.0.2.0
 var longest_distance = 0
 var permanent = false
-var size = 10
+var size = 20
 var connected_to_patch = false # Is the node gathering resources from a patch?
 var connected_patch = null # The patch this node is connected to, if there is one
 var in_rocky_soil = false
@@ -179,6 +179,8 @@ func get_size():
 		if not shriveled:
 			line.default_color = Color(0.402344, 0.330833, 0.259323)
 			line.z_index = 6
+	if permanent:
+		line.width = max(line.width, 15)
 	return size
 	
 func shrivel():
