@@ -17,8 +17,8 @@ var first_node_in_branch = true # Unused
 var drawing_branch_ID = "" # Unused, for identifying the specific branch a root is on
 var max_root_length = MINIMUM_NODE_DISTANCE # the longest root from the base of the tree; use this (at least partially) for resource consumption scaling
 onready var tree_base  = $tree_root_node # Convinience variable for the base of the tree
-onready var resource_patches = get_parent().get_child(2)
-onready var resource_manager = get_parent().get_child(4)
+onready var resource_patches = get_parent().get_child(1)
+onready var resource_manager = get_parent().get_child(3)
 var world_scale
 
 # Called when the node enters the scene tree for the first time.

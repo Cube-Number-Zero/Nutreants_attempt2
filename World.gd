@@ -8,7 +8,6 @@ const PAN_ACCELERATION = 1024
 
 onready var resource_patches = $resouce_patches
 onready var rocks = $rocks
-onready var background = $background_rect
 onready var roots = $roots
 onready var ResourceManager = $ResourceManager
 
@@ -22,7 +21,7 @@ var mouse_position = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	VisualServer.set_default_clear_color(Color(0.22, 0.15, 0.09))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -59,7 +58,6 @@ func _process(delta):
 	if position.y > 0:
 		position.y = 0
 		camera_pan_velocity.y = 0
-	background.rect_position = -position
 	# Updates the indicator lines for all patches
 	if not is_game_over:
 		resource_patches.update_indicator_lines()
@@ -80,6 +78,9 @@ func game_over_effects(delta):
 	roots.shrivel()
 	if not game_over_wait:
 		if Input.is_mouse_button_pressed(1):
+			Hud.visible = false
+			Hud.resource_count.visible = true
+			Hud.score_count.text = "Score: "
 			Hud.score_count.visible = false
 			get_tree().change_scene("MainMenu.tscn")
 	

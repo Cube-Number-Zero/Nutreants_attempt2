@@ -145,7 +145,7 @@ func gather_upwards_node(levels):
 	"""Returns the node <levels> levels above this node
 	(this node's parent is one level above, and that node's parent is two levels above)
 	"""
-	if get_parent() is Roots_Controller or levels <= 0:
+	if get_parent().name == "roots" or levels <= 0:
 		return self
 	return get_parent().gather_upwards_node(levels - 1)
 
