@@ -41,13 +41,14 @@ func get_closest_node_to_point(loc):
 		
 	# Tests to see if this node's children are closer and returns their result if so
 	elif get_child_count() == 2:
-		if $tree_root_node == null:
-			return own_result
-		var best_child = $tree_root_node.get_closest_node_to_point(loc)
-		if own_result[1] < best_child[1]:
-			return own_result
+		if is_instance_valid(get_child(1)):
+			var best_child = get_child(1).get_closest_node_to_point(loc)
+			if own_result[1] < best_child[1]:
+				return own_result
+			else:
+				return best_child
 		else:
-			return best_child
+			return own_result
 	else:
 		var children_result_list = []
 		for childNode in get_children():
@@ -180,7 +181,7 @@ func get_size():
 	return size
 
 func _on_Area2D_area_entered(area):
-	if area.get_parent().name == "Rock":
+	if "Rock" in area.get_parent().name:
 		in_rocky_soil = true
 	else:
 		in_rocky_soil = false
@@ -190,4 +191,7 @@ func _on_Area2D_area_entered(area):
 func _on_Timer_timeout():
 	collider.queue_free()
 	if in_rocky_soil:
+		SoundPlayer.play_rock_grow(get_global_position())
 		ResourceManager.spend(node_resource_cost * (ROCKS_RESOURCE_COST_MULTIPLIER - 1))
+	else:
+		SoundPlayer.play_grow_root(get_global_position())
