@@ -15,10 +15,10 @@ margin_bottom = 599.0
 color = Color( 0, 0, 0, 1 )
 
 [node name="NewGame" type="ColorRect" parent="."]
-margin_left = 301.0
-margin_top = 143.0
-margin_right = 634.0
-margin_bottom = 183.0
+margin_left = 405.0
+margin_top = 267.0
+margin_right = 705.0
+margin_bottom = 307.0
 
 [node name="Label" type="Label" parent="NewGame"]
 margin_left = 112.0
@@ -32,10 +32,10 @@ align = 1
 valign = 1
 
 [node name="quit" type="ColorRect" parent="."]
-margin_left = 300.0
-margin_top = 241.0
-margin_right = 637.0
-margin_bottom = 281.0
+margin_left = 399.0
+margin_top = 379.0
+margin_right = 736.0
+margin_bottom = 419.0
 rect_pivot_offset = Vector2( 237, 38 )
 
 [node name="Label" type="Label" parent="quit"]
