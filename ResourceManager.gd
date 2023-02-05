@@ -29,6 +29,12 @@ func _process(delta):
 	
 	resources -= cost_per_second * delta
 	base_cost_per_second += BASE_COST_PER_SECOND_INCREASE_RATE * delta
+	
+	Hud.update_resource_display(resources)
+	
+	if cost_per_second < 0 and resources < 0:
+		# The player has lost
+		get_tree().change_scene("MainMenu.tscn")
 
 func spend(cost):
 	"""Spends <cost> resources

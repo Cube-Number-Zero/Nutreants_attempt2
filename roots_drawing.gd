@@ -16,7 +16,8 @@ var first_node_in_branch = true # Unused
 var drawing_branch_ID = "" # Unused, for identifying the specific branch a root is on
 var max_root_length = MINIMUM_NODE_DISTANCE # the longest root from the base of the tree; use this (at least partially) for resource consumption scaling
 onready var tree_base  = $tree_root_node # Convinience variable for the base of the tree
-onready var resource_patches = get_parent().get_child(1)
+onready var resource_patches = get_parent().get_child(2)
+onready var resource_manager = get_parent().get_child(4)
 var world_scale
 
 # Called when the node enters the scene tree for the first time.
@@ -71,7 +72,7 @@ func update_root_network():
 	Returns nothing
 	"""
 	max_root_length = tree_base.get_longest_distance_from_origin()
-	ResourceManager.max_length = max_root_length - MINIMUM_NODE_DISTANCE
+	resource_manager.max_length = max_root_length - MINIMUM_NODE_DISTANCE
 	tree_base.get_size()
 
 func add_node(loc, connected = false, connected_resource_patch = null):
@@ -80,7 +81,7 @@ func add_node(loc, connected = false, connected_resource_patch = null):
 	Returns nothing
 	"""
 	var resource_cost = (loc - parent_node.get_global_position()).length() * sqrt(loc.y) * 0.005
-	if ResourceManager.can_afford(resource_cost) or connected:
+	if resource_manager.can_afford(resource_cost) or connected:
 		
 		var new_node = NEW_NODE.instance()
 		parent_node.add_child(new_node)
@@ -105,7 +106,7 @@ func add_node(loc, connected = false, connected_resource_patch = null):
 			connected_resource_patch.connect_to()
 			SoundPlayer.play_collect_resources(loc)
 		
-		ResourceManager.spend(resource_cost)
+		resource_manager.spend(resource_cost)
 		
 		update_root_network()
 		

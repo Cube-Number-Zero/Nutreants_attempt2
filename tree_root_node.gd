@@ -19,11 +19,13 @@ var node_resource_cost # how much it cost to create this node
 onready var line = $node_stuff/Line2D
 onready var collider = $node_stuff/Area2D
 onready var world = get_parent()
+onready var resource_manager
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	while world.name != "World":
 		world = world.get_parent()
+	resource_manager = world.ResourceManager
 
 func at_end():
 	# Returns true if the node is at the end of a root
@@ -192,6 +194,6 @@ func _on_Timer_timeout():
 	collider.queue_free()
 	if in_rocky_soil:
 		SoundPlayer.play_rock_grow(get_global_position())
-		ResourceManager.spend(node_resource_cost * (ROCKS_RESOURCE_COST_MULTIPLIER - 1))
+		resource_manager.spend(node_resource_cost * (ROCKS_RESOURCE_COST_MULTIPLIER - 1))
 	else:
 		SoundPlayer.play_grow_root(get_global_position())

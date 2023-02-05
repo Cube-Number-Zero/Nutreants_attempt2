@@ -12,6 +12,7 @@ var lineless = false
 onready var polygon = $Polygon2D
 onready var line = $Line2D
 onready var game_world = get_parent().get_parent()
+onready var resource_manager = game_world.ResourceManager
 
 func _ready():
 	randomize()
@@ -24,8 +25,8 @@ func randomize_patch_size():
 	Returns nothing
 	"""
 	var normalized_size = randf() * randf()
-	resources_per_second = lerp(ResourceManager.MIN_RESOURCE_VALUE,\
-								ResourceManager.MAX_RESOURCE_VALUE, normalized_size)
+	resources_per_second = lerp(resource_manager.MIN_RESOURCE_VALUE,\
+								resource_manager.MAX_RESOURCE_VALUE, normalized_size)
 	polygon_radius = pow(lerp(sqrt(MIN_RADIUS), sqrt(MAX_RADIUS), normalized_size), 2)
 
 func connect_to():
@@ -36,8 +37,8 @@ func connect_to():
 		print("WARNING: Tried to double collect a resource!")
 	else:
 		acquired = true
-		ResourceManager.resource_income += resources_per_second
-		ResourceManager.unexploited_resource_income -= resources_per_second
+		resource_manager.resource_income += resources_per_second
+		resource_manager.unexploited_resource_income -= resources_per_second
 		polygon.color = Color(0.5, 1, 0.75)
 		if not lineless:
 			line.queue_free()
@@ -50,8 +51,8 @@ func disconnect_from():
 	"""
 	if acquired:
 		acquired = false
-		ResourceManager.resource_income -= resources_per_second
-		ResourceManager.unexploited_resource_income += resources_per_second
+		resource_manager.resource_income -= resources_per_second
+		resource_manager.unexploited_resource_income += resources_per_second
 		polygon.color = Color(0.5, 0.75, 1)
 	else:
 		print("WARNING: Tried to disconnect a non-connected resource!")

@@ -4,13 +4,14 @@ const TOTAL_RESOURCE_INCOME_GOAL = 15.0
 # Will generate more resource patches until the combined income of
 # all unexploited resource patches reaches this value
 
-var resource_generator_radius = ResourceManager.START_RESOURCE_DISTANCE # How far to generate resources. Increases over time.
-onready var rock_generator = get_parent().get_child(2)
+onready var resource_manager = get_parent().get_child(4)
+onready var resource_generator_radius = resource_manager.START_RESOURCE_DISTANCE # How far to generate resources. Increases over time.
+onready var rock_generator = get_parent().get_child(3)
 
 const NEW_RESOURCE = preload("res://Resource_patch.tscn")
 
 func _process(_delta):
-	if ResourceManager.unexploited_resource_income < TOTAL_RESOURCE_INCOME_GOAL:
+	if resource_manager.unexploited_resource_income < TOTAL_RESOURCE_INCOME_GOAL:
 		generate_resource_patch()
 
 func test_connection(loc, connection_range):
@@ -32,8 +33,8 @@ func generate_resource_patch():
 	add_child(new_patch)
 	var generation_angle = -lerp(PI, TAU, randf())
 	new_patch.position = resource_generator_radius * Vector2(cos(generation_angle), sin(generation_angle))
-	ResourceManager.unexploited_resource_income += new_patch.resources_per_second
-	resource_generator_radius += new_patch.resources_per_second * ResourceManager.RESOURCE_SCARCITY
+	resource_manager.unexploited_resource_income += new_patch.resources_per_second
+	resource_generator_radius += new_patch.resources_per_second * resource_manager.RESOURCE_SCARCITY
 	
 	rock_generator.check_generation(resource_generator_radius)
 
