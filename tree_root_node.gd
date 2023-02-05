@@ -218,3 +218,4 @@ func _on_Timer_timeout():
 		resource_manager.spend(node_resource_cost * (ROCKS_RESOURCE_COST_MULTIPLIER - 1))
 	else:
 		SoundPlayer.play_grow_root(get_global_position())
+	
