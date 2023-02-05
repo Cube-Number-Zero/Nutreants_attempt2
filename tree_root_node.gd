@@ -16,7 +16,8 @@ var connected_to_patch = false # Is the node gathering resources from a patch?
 var connected_patch = null # The patch this node is connected to, if there is one
 var in_rocky_soil = false
 var node_resource_cost # how much it cost to create this node
-var shriveled = false
+var original_color: Vector3
+var shriveled = 0.0
 
 onready var line: = $node_stuff/Line2D
 onready var collider: = $node_stuff/Area2D
@@ -185,20 +186,22 @@ func shrivel():
 	var all_children_shriveled = true
 	for childNode in get_children():
 		if "tree_root_node" in childNode.name:
-			if not childNode.shriveled:
-				all_children_shriveled = false
+			if childNode.shriveled < 1.0:
 				childNode.shrivel()
+				if childNode.shriveled < 0.25:
+					all_children_shriveled = false
 	if all_children_shriveled:
-		if randf() > 0.5:
-			shriveled = true
-			if in_rocky_soil:
-				line.default_color = Color(0.1, 0.1, 0.1)
-				line.z_index = 3
-			else:
-				line.default_color = Color(0.330833, 0.330833, 0.330833)
-				line.z_index = 5
+		if shriveled == 0.0:
+			original_color = Vector3(line.default_color.r, line.default_color.g, line.default_color.b)
 			if connected_to_patch:
 				connected_patch.disconnect_from()
+		shriveled += 0.1
+		var current_color = original_color
+		var target_color = Vector3(0.1, 0.1, 0.1) if in_rocky_soil else Vector3(0.330833, 0.330833, 0.330833)
+		line.z_index += 0.2
+		current_color = target_color * shriveled + current_color * (1.0 - shriveled)
+		
+		line.default_color = Color(current_color.x, current_color.y, current_color.z)
 
 func _on_Area2D_area_entered(area):
 	if area.get_parent() is Rock_Area:
