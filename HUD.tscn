@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://HUD.gd" type="Script" id=1]
+[ext_resource path="res://Assets/new_dynamicfont.tres" type="DynamicFont" id=2]
 
 [sub_resource type="Gradient" id=3]
 colors = PoolColorArray( 0, 0, 0, 0.329412, 0, 0, 0, 0.329412 )
@@ -32,6 +33,7 @@ color = Color( 1, 0, 0, 1 )
 margin_right = 340.0
 margin_bottom = 40.0
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 2 )
 text = "quit"
 align = 1
 valign = 1
@@ -55,6 +57,7 @@ margin_right = 512.0
 margin_bottom = 300.0
 rect_scale = Vector2( 2, 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_fonts/font = ExtResource( 2 )
 text = "Score: "
 align = 1
 valign = 1

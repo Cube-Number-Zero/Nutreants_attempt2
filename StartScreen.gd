@@ -12,7 +12,6 @@ func _process(_delta):
 				mouse_position.x <= $NewGame.rect_position.x + 320) and\
 				(mouse_position.y >= $NewGame.rect_position.y and\
 				mouse_position.y <= $NewGame.rect_position.y + 40):
-			
 			if play_menu_hover:
 				SoundPlayer.play_menu_hover()
 				play_menu_hover = false
