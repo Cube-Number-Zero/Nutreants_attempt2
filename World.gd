@@ -27,6 +27,10 @@ func _ready():
 func _process(delta):
 	mouse_position = get_viewport().get_mouse_position()
 	if not is_game_over:
+		Hud.score_count.visible = true
+		Hud.score_count.rect_position.x = 1024 - Hud.score_count.rect_size.x - 75
+		Hud.score_count.rect_position.y = Hud.score_count.rect_size.y - 75
+		Hud.score_count.text = "Score: " + str(round(ResourceManager.score))
 		# Pan the camera
 		var input_vector = Vector2.ZERO
 		if Input.is_action_pressed("ui_up"):
@@ -67,7 +71,8 @@ func game_over_effects_single():
 	Hud.quit_button.visible = false
 	Hud.resource_count.visible = false
 	Hud.score_count.visible = true
-	Hud.score_count.text += str(round(ResourceManager.score))
+	Hud.score_count.rect_position.x = 362
+	Hud.score_count.rect_position.y = 225
 	resource_patches.disable_indicator_lines()
 	$game_end_timer.start()
 
@@ -78,7 +83,7 @@ func game_over_effects(delta):
 	roots.shrivel()
 	if not game_over_wait:
 		if Input.is_mouse_button_pressed(1):
-			Hud.visible = false
+			Hud.visible = true
 			Hud.resource_count.visible = true
 			Hud.score_count.text = "Score: "
 			Hud.score_count.visible = false
