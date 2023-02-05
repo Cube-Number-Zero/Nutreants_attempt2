@@ -57,7 +57,7 @@ func _physics_process(_delta):
 			else:
 				add_node(mouse_position)
 		
-func snap_to_node(loc):
+func snap_to_node(loc: Vector2):
 	"""If a node is close enough to the <loc>, begin drawing from that node
 	Returns nothing
 	"""
@@ -76,7 +76,7 @@ func update_root_network():
 	resource_manager.max_length = max_root_length - MINIMUM_NODE_DISTANCE
 	tree_base.get_size()
 
-func add_node(loc, connected = false, connected_resource_patch = null):
+func add_node(loc: Vector2, connected: bool = false, connected_resource_patch: Resource_Patch = null):
 	"""Adds a node at <loc>, if you can afford it
 	If the node to be added will be connected to a resource patch, the last two parameters are needed
 	Returns nothing
@@ -118,13 +118,13 @@ func add_node(loc, connected = false, connected_resource_patch = null):
 	else:
 		drawing = false
 
-func colliding_with_node(loc):
+func colliding_with_node(loc: Vector2):
 	"""Tests if a node at <loc> would be close enough to collide with another node
 	Returns the boolean result
 	"""
 	return tree_base.test_collision(loc, MINIMUM_UNRELATED_NODE_DISTANCE, parent_node.gather_nearby_nodes(1))
 
-func too_close_to_previous_node(loc):
+func too_close_to_previous_node(loc: Vector2):
 	"""Tests if a node at <loc> is too close to the previous node to draw a new node
 	Returns the boolean result
 	"""

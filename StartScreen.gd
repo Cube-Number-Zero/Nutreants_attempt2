@@ -8,21 +8,28 @@ var play_menu_hover = true
 func _process(_delta):
 	mouse_position = get_viewport().get_mouse_position()
 	if not buttons_disabled:
-		if (mouse_position.x >= $NewGame.rect_position.x and mouse_position.x <= $NewGame.rect_position.x + 320) and (mouse_position.y >= $NewGame.rect_position.y and mouse_position.y <= $NewGame.rect_position.y + 160):
+		if (	mouse_position.x >= $NewGame.rect_position.x and\
+				mouse_position.x <= $NewGame.rect_position.x + 320) and\
+				(mouse_position.y >= $NewGame.rect_position.y and\
+				mouse_position.y <= $NewGame.rect_position.y + 40):
+			
 			if play_menu_hover:
-				SoundPlayer.play_menu_hover($NewGame.rect_position)
+				SoundPlayer.play_menu_hover()
 				play_menu_hover = false
 			if Input.is_mouse_button_pressed(1):
 				Hud.visible = true
 				get_tree().change_scene("World.tscn")
-		else:
-			play_menu_hover = true
-		if mouse_position.x >= $QuitButton.rect_position.x and mouse_position.x <= $QuitButton.rect_position.x + 320:
-			if mouse_position.y >= $QuitButton.rect_position.y and mouse_position.y <= $QuitButton.rect_position.y + 160:
-				SoundPlayer.play_menu_hover($NewGame.rect_position)
-				if Input.is_mouse_button_pressed(1):
-					get_tree().quit()
+		elif	mouse_position.x >= $QuitButton.rect_position.x and\
+				mouse_position.x <= $QuitButton.rect_position.x + 320 and\
+				mouse_position.y >= $QuitButton.rect_position.y and\
+				mouse_position.y <= $QuitButton.rect_position.y + 40:
+				
+			if play_menu_hover:
+				SoundPlayer.play_menu_hover()
+				play_menu_hover = false
+			if Input.is_mouse_button_pressed(1):
+				get_tree().quit()
+		else: play_menu_hover = true
 
 
-func _on_button_cooldown_timeout():
-	buttons_disabled = false
+func _on_button_cooldown_timeout(): buttons_disabled = false

@@ -34,26 +34,23 @@ func at_end():
 	# Returns true if the node is at the end of a root
 	return get_child_count() == 1
 
-func get_closest_node_to_point(loc):
+func get_closest_node_to_point(loc: Vector2):
 	"""Finds which node is closest to a given location
 	Only call this node from the base tree_root_node
 	Outputs an array with the node object itself and the distance to the location
 	[node, distance]"""
 	# Tests how close this node is to the location
 	var own_result = [self, loc.distance_squared_to(get_global_position())]
-	if at_end():
-		return own_result
+	if at_end(): return own_result
 		
 	# Tests to see if this node's children are closer and returns their result if so
 	elif get_child_count() == 2:
 		if is_instance_valid(get_child(1)):
 			var best_child = get_child(1).get_closest_node_to_point(loc)
-			if own_result[1] < best_child[1]:
-				return own_result
-			else:
-				return best_child
-		else:
-			return own_result
+			
+			if own_result[1] < best_child[1]: return own_result
+			else: return best_child
+		else: return own_result
 	else:
 		var children_result_list = []
 		for childNode in get_children():
@@ -63,10 +60,8 @@ func get_closest_node_to_point(loc):
 		for output in children_result_list:
 			if output[1] < minimum_distance_found[1]:
 				minimum_distance_found = output
-		if own_result[1] < minimum_distance_found[1]:
-			return own_result
-		else:
-			return minimum_distance_found
+		if own_result[1] < minimum_distance_found[1]: return own_result
+		else: return minimum_distance_found
 
 func calculate_branch_ID(parent_branch_ID: String):
 	"""Unused, call from the base tree_root_node
@@ -88,7 +83,7 @@ func get_next_branch_ID():
 	"""
 	return branch_ID + "." + str(get_child_count() - 1)
 
-func test_collision(loc: Vector2, collision_distance, ignored_nodes = []):
+func test_collision(loc: Vector2, collision_distance: float, ignored_nodes: Array = []):
 	"""Tests to see if a location is within collision distance of a node
 	Can provide nodes to ignore in the search
 	Returns a boolean result
@@ -145,15 +140,13 @@ func gather_upwards_node(levels: int):
 	"""Returns the node <levels> levels above this node
 	(this node's parent is one level above, and that node's parent is two levels above)
 	"""
-	if get_parent().name == "roots" or levels <= 0:
-		return self
-	return get_parent().gather_upwards_node(levels - 1)
+	if get_parent().name == "roots" or levels <= 0: return self
+	else: return get_parent().gather_upwards_node(levels - 1)
 
 func gather_downwards_nodes(levels: int):
 	"""Returns an array of all nodes <levels> levels below this node
 	"""
-	if levels <= 0 or at_end():
-		return [self]
+	if levels <= 0 or at_end(): return [self]
 	var output_list = [self]
 	for childNode in get_children():
 		if "tree_root_node" in childNode.name:
@@ -179,12 +172,12 @@ func get_size():
 		line.width = sqrt(size) * 0.5 / 2
 		if not shriveled:
 			line.default_color = Color(0.15, 0.1, 0.05)
-			line.z_index = 2.9
+			line.z_index = 4
 	else:
 		line.width = sqrt(size) * 0.5
 		if not shriveled:
 			line.default_color = Color(0.402344, 0.330833, 0.259323)
-			line.z_index = 3
+			line.z_index = 6
 	return size
 	
 func shrivel():
@@ -200,10 +193,10 @@ func shrivel():
 			shriveled = true
 			if in_rocky_soil:
 				line.default_color = Color(0.1, 0.1, 0.1)
-				line.z_index = 2.7
+				line.z_index = 3
 			else:
 				line.default_color = Color(0.330833, 0.330833, 0.330833)
-				line.z_index = 2.8
+				line.z_index = 5
 			if connected_to_patch:
 				connected_patch.disconnect_from()
 

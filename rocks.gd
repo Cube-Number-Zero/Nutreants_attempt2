@@ -9,7 +9,7 @@ const NEW_ROCK := preload("res://Rock.tscn")
 func _ready():
 	randomize()
 
-func check_generation(distance):
+func check_generation(distance: int):
 	"""Checks to see if rocks have been generated to a given distance
 	If not, generates more rocks.
 	Returns nothing

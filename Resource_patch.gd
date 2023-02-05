@@ -1,4 +1,5 @@
 extends Node2D
+class_name Resource_Patch
 
 
 const MIN_RADIUS = 2 # The radius of the smalled resource patch
@@ -110,7 +111,7 @@ func disable_indicator_line():
 		lineless = true
 		line.queue_free()
 
-func is_inside_camera_view(loc, tolerance=0):
+func is_inside_camera_view(loc: Vector2, tolerance: int = 0):
 	"""Returns true if <loc> is inside the player's view, or within a certain <tolerance>
 	"""
 	if loc.x < -tolerance:
