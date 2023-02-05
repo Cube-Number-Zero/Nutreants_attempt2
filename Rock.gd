@@ -6,7 +6,6 @@ onready var collider = $Area2D
 
 func _ready():
 	randomize()
-	generate_random_rock_formation(125, 50, 0.6, 25) # example generation
 	
 func generate_random_rock_formation(distance_from_origin, depth, width_ratio, distance_between_points):
 	# distance_from_origin = how many pixels the center of the rock formation is from the tree base
@@ -28,11 +27,11 @@ func generate_random_rock_formation(distance_from_origin, depth, width_ratio, di
 	for i in range(points_count_inner + 1):
 		var theta = lerp(start_angle, end_angle, i / points_count_inner)
 		var new_point = (distance_from_origin - depth / 2) * Vector2(cos(theta), sin(theta))
-		point_list.append(new_point + get_random_vector2(depth / 3))
+		point_list.append(new_point + get_random_vector2(distance_between_points / 2))
 	for i in range(points_count_outer + 1):
 		var theta = lerp(end_angle, start_angle, i / points_count_outer)
 		var new_point = (distance_from_origin + depth / 2) * Vector2(cos(theta), sin(theta))
-		point_list.append(new_point + get_random_vector2(depth / 3))
+		point_list.append(new_point + get_random_vector2(distance_between_points / 2))
 	poly_visible.polygon = point_list
 	poly_collide.polygon = point_list
 

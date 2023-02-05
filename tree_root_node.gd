@@ -181,7 +181,7 @@ func get_size():
 	return size
 
 func _on_Area2D_area_entered(area):
-	if area.get_parent().name == "Rock":
+	if "Rock" in area.get_parent().name:
 		in_rocky_soil = true
 	else:
 		in_rocky_soil = false
