@@ -25,6 +25,16 @@ _global_script_classes=[ {
 "path": "res://ResourceManager.gd"
 }, {
 "base": "Node2D",
+"class": "Resource_Patch",
+"language": "GDScript",
+"path": "res://Resource_patch.gd"
+}, {
+"base": "Node2D",
+"class": "Rock_Area",
+"language": "GDScript",
+"path": "res://Rock.gd"
+}, {
+"base": "Node2D",
 "class": "Root_Node",
 "language": "GDScript",
 "path": "res://tree_root_node.gd"
@@ -38,6 +48,7 @@ _global_script_class_icons={
 "Game_World": "",
 "Resouce_Patch_Parent": "",
 "Resource_Manager": "",
+"Resource_Patch": "",
 "Rock_Area": "",
 "Root_Node": "",
 "Roots_Controller": ""
